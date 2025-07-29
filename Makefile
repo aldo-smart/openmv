@@ -121,8 +121,15 @@ include $(OMV_BOARD_CONFIG_DIR)/omv_boardconfig.mk
 # Additional qstr definitions for OpenMV
 #OMV_SRC_QSTR := $(wildcard $(TOP_DIR)/modules/*.c)
 
+# Map board names for MicroPython compatibility
+ifeq ($(TARGET),STM32N6570DK)
+MPY_BOARD = STM32N6570_DK
+else
+MPY_BOARD = $(TARGET)
+endif
+
 # The following command line args are passed to MicroPython's top Makefile.
-MPY_MKARGS = PORT=$(PORT) BOARD=$(TARGET) DEBUG=$(DEBUG) MICROPY_MANIFEST_OMV_LIB_DIR=$(OMV_LIB_DIR)\
+MPY_MKARGS = PORT=$(PORT) BOARD=$(MPY_BOARD) DEBUG=$(DEBUG) MICROPY_MANIFEST_OMV_LIB_DIR=$(OMV_LIB_DIR)\
              FROZEN_MANIFEST=$(FROZEN_MANIFEST) OMV_SRC_QSTR="$(OMV_SRC_QSTR)"\
              MICROPY_ROM_TEXT_COMPRESSION=$(ROM_TEXT_COMPRESSION) USER_C_MODULES=$(TOP_DIR)
 
